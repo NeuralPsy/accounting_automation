@@ -1,6 +1,8 @@
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Menu{
@@ -16,8 +18,12 @@ public class Menu{
 
     void doWhatUserSay(int userInput){
         MonthlyReport monthlyReport = new MonthlyReport();
+        HashMap<String, ArrayList<HashMap>> monthsData = null;
         switch (userInput){
             case 1:
+                monthlyReport.countReport();
+                break;
+            case 4:
                 monthlyReport.printReport();
                 break;
             }

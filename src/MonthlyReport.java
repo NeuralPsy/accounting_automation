@@ -5,69 +5,77 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class MonthlyReport implements Reports {
+public class MonthlyReport {
     private String[] months = {"Январь", "Февраль", "Март"};
-    public void printReport() {
+    private final String  monthFileName= "m.20210";
+    static HashMap<String, ArrayList<HashMap>> preparedData = new HashMap<>();
 
-       // обработка файла для дальнейших рассчетов
+    public void countReport() {
+
         for (int i = 0; i < months.length; i++) {
-            ArrayList<String> item_name = new ArrayList<>();
-            HashMap<String, Boolean> is_expense = new HashMap<>();
-            HashMap<String, Integer> quantity = new HashMap<>();
-            HashMap<String, Integer> sum_of_one = new HashMap<>();
-            ArrayList<HashMap> preparedData = new ArrayList<>();
+            ArrayList<HashMap> monthData = new ArrayList<>();
 
-            int maxSum = 0;
-            String nameOfBest = "";
-            int maxExpense = 0;
-            String maxExpenseItem = "";
-            String fileContents = readFileContentsOrNull("resources/m.20210" + (i+1) + ".csv");
+            HashMap<String, ArrayList<String>> item_nameMap = new HashMap<>();
+            HashMap<String, ArrayList<Boolean>> is_expenseMap = new HashMap<>();
+            HashMap<String, ArrayList<Integer>> quantityMap = new HashMap<>();
+            HashMap<String, ArrayList<Integer>> sum_of_oneMap = new HashMap<>();
+
+            ArrayList<String> item_name = new ArrayList<>();
+            ArrayList<Boolean> is_expense = new ArrayList<>();
+            ArrayList<Integer> quantity = new ArrayList<>();
+            ArrayList<Integer> sum_of_one = new ArrayList<>();
+
+            String fileContents = readFileContentsOrNull("resources/"+monthFileName + (i+1) + ".csv");
             String[] lines = fileContents.split(System.lineSeparator());
-            System.out.println(months[i]);
 
             for (int j = 1; j < lines.length; j++){
                 String[] lineContents = lines[j].split(",");
                 item_name.add(lineContents[0]);
-                is_expense.put(lineContents[0], Boolean.parseBoolean(lineContents[1]));
-                quantity.put(lineContents[0], Integer.parseInt(lineContents[2]));
-                sum_of_one.put(lineContents[0], Integer.parseInt(lineContents[3]));
-
-                for (String item: item_name){
-                    boolean isExpense = is_expense.get(item);
-                    int itemQuantity = quantity.get(item);
-                    int sumOfOne = sum_of_one.get(item);
-                    if (maxSum < itemQuantity*sumOfOne && isExpense) {
-                        maxSum = itemQuantity * sumOfOne;
-                        nameOfBest = item;
-                    }
-                    if (maxExpense < sumOfOne) {
-                        maxExpense = sumOfOne;
-                        maxExpenseItem = item;
-                    }
-
-                }
-
+                is_expense.add(Boolean.parseBoolean(lineContents[1]));
+                quantity.add(Integer.parseInt(lineContents[2]));
+                sum_of_one.add(Integer.parseInt(lineContents[3]));
             }
-            preparedData.add(is_expense);
-            preparedData.add(quantity);
-            preparedData.add(sum_of_one);
+            item_nameMap.put("item_name", item_name);
+            is_expenseMap.put("is_expense", is_expense);
+            quantityMap.put("quantity", quantity);
+            sum_of_oneMap.put("sum_of_one", sum_of_one);
 
-            System.out.println("Самый прибыльный товар – "+nameOfBest+". Прибыль "+ maxSum);
-            System.out.println("Самая большая трата – "+ maxExpenseItem+". Сумма "+ maxExpense);
-            System.out.println();
+            monthData.add(item_nameMap);
+            monthData.add(is_expenseMap);
+            monthData.add(quantityMap);
+            monthData.add(sum_of_oneMap);
 
 
-
-
-
+            preparedData.put(months[i],monthData);
 
         }
     }
+    public void printReport(){
+        String maxItemName = "";
+        int maxMoney = 0;
+        for (String month: preparedData.keySet()){
+            System.out.println(month);
+            for (int i = 0; i < preparedData.get(month).size(); i++){
+                HashMap<String, ArrayList<HashMap>> monthInfo = preparedData.get(month).get(i);
+                for (String column: monthInfo.keySet()){
+                    for (int j = 0; j < monthInfo.get(column).size(); j++){
+                        System.out.println(monthInfo.get(column).get(j));
+                    }
+                }
+
+            }
+        }
+    }
+
+
+
+
     public String readFileContentsOrNull(String path) {
         try {
             return Files.readString(Path.of(path));
         } catch (IOException e) {
-            System.out.println("Невозможно прочитать файл с месячным отчётом. Возможно, файл не находится в нужной директории.");
+            System.out.println("Невозможно прочитать файл с месячным отчётом. " +
+                    "Возможно, файл не находится в нужной директории.");
             return null;
         }
     }
