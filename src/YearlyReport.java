@@ -13,6 +13,8 @@ public class YearlyReport implements Reports{
             HashMap<String, Integer> quantity = new HashMap<>();
             HashMap<String, Integer> sum_of_one = new HashMap<>();
 
+            //тестовый коммент для проверки работы гита
+
             String fileContents = readFileContentsOrNull("resources/y."+years[i]+".csv");
             String[] lines = fileContents.split(System.lineSeparator());
             System.out.println(months[i]);
