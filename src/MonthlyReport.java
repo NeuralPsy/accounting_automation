@@ -8,61 +8,52 @@ import java.util.HashMap;
 public class MonthlyReport {
     private String[] months = {"Январь", "Февраль", "Март"};
     private final String  monthFileName= "m.20210";
-    static HashMap<String, ArrayList<HashMap>> preparedData = new HashMap<>();
+    static HashMap<String, ArrayList> monthlyReport = new HashMap<>();
+
+    static private boolean isAlreadyChecked = false;
 
     public void countReport() {
+        if (!isAlreadyChecked) {
+            ArrayList<HashMap> itemsInfo = new ArrayList<>();
 
-        for (int i = 0; i < months.length; i++) {
-            ArrayList<HashMap> monthData = new ArrayList<>();
+            for (int i = 0; i < months.length; i++) {
+                HashMap<String, Boolean> is_expense = new HashMap<>();
+                HashMap<String, Integer> quantity = new HashMap<>();
+                HashMap<String, Integer> sum_of_one = new HashMap<>();
 
-            HashMap<String, ArrayList<String>> item_nameMap = new HashMap<>();
-            HashMap<String, ArrayList<Boolean>> is_expenseMap = new HashMap<>();
-            HashMap<String, ArrayList<Integer>> quantityMap = new HashMap<>();
-            HashMap<String, ArrayList<Integer>> sum_of_oneMap = new HashMap<>();
+                String fileContents = readFileContentsOrNull("resources/" + monthFileName + (i + 1) + ".csv");
+                String[] lines = fileContents.split(System.lineSeparator());
 
-            ArrayList<String> item_name = new ArrayList<>();
-            ArrayList<Boolean> is_expense = new ArrayList<>();
-            ArrayList<Integer> quantity = new ArrayList<>();
-            ArrayList<Integer> sum_of_one = new ArrayList<>();
+                for (int j = 1; j < lines.length; j++) {
+                    String[] lineContents = lines[j].split(",");
 
-            String fileContents = readFileContentsOrNull("resources/"+monthFileName + (i+1) + ".csv");
-            String[] lines = fileContents.split(System.lineSeparator());
+                    is_expense.put(lineContents[0], Boolean.parseBoolean(lineContents[1]));
+                    quantity.put(lineContents[0], Integer.parseInt(lineContents[2]));
+                    sum_of_one.put(lineContents[0], Integer.parseInt(lineContents[3]));
 
-            for (int j = 1; j < lines.length; j++){
-                String[] lineContents = lines[j].split(",");
-                item_name.add(lineContents[0]);
-                is_expense.add(Boolean.parseBoolean(lineContents[1]));
-                quantity.add(Integer.parseInt(lineContents[2]));
-                sum_of_one.add(Integer.parseInt(lineContents[3]));
-            }
-            item_nameMap.put("item_name", item_name);
-            is_expenseMap.put("is_expense", is_expense);
-            quantityMap.put("quantity", quantity);
-            sum_of_oneMap.put("sum_of_one", sum_of_one);
+                }
+                itemsInfo.add(is_expense);
+                itemsInfo.add(quantity);
+                itemsInfo.add(sum_of_one);
+                monthlyReport.put(months[i], itemsInfo);
 
-            monthData.add(item_nameMap);
-            monthData.add(is_expenseMap);
-            monthData.add(quantityMap);
-            monthData.add(sum_of_oneMap);
-
-
-            preparedData.put(months[i],monthData);
-
+            } isAlreadyChecked = true;
+        } else {
+            System.out.println("Отчеты за все месяцы уже считаны. " +
+                    "Вы можете вывести информацию о всех месячных отчетах");
         }
     }
     public void printReport(){
-        String maxItemName = "";
-        int maxMoney = 0;
-        for (String month: preparedData.keySet()){
+        for (String month: months){
             System.out.println(month);
-            for (int i = 0; i < preparedData.get(month).size(); i++){
-                HashMap<String, ArrayList<HashMap>> monthInfo = preparedData.get(month).get(i);
-                for (String column: monthInfo.keySet()){
-                    for (int j = 0; j < monthInfo.get(column).size(); j++){
-                        System.out.println(monthInfo.get(column).get(j));
-                    }
-                }
+            ArrayList<HashMap> itemsOfMonth = monthlyReport.get(month);
+            System.out.println(itemsOfMonth);
+            for (HashMap item: itemsOfMonth){
+               for (HashMap innerItem: itemsOfMonth){
+                   for (Object innerItemName: innerItem.keySet()){
 
+                   }
+               }
             }
         }
     }
