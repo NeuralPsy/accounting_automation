@@ -17,9 +17,9 @@ public class MonthlyReport {
             ArrayList<HashMap> itemsInfo = new ArrayList<>();
 
             for (int i = 0; i < months.length; i++) {
-                HashMap<String, Boolean> is_expense = new HashMap<>();
+                HashMap<String, Boolean> isExpense = new HashMap<>();
                 HashMap<String, Integer> quantity = new HashMap<>();
-                HashMap<String, Integer> sum_of_one = new HashMap<>();
+                HashMap<String, Integer> sumOfOne = new HashMap<>();
 
                 String fileContents = readFileContentsOrNull("resources/" + monthFileName + (i + 1) + ".csv");
                 String[] lines = fileContents.split(System.lineSeparator());
@@ -27,15 +27,19 @@ public class MonthlyReport {
                 for (int j = 1; j < lines.length; j++) {
                     String[] lineContents = lines[j].split(",");
 
-                    is_expense.put(lineContents[0], Boolean.parseBoolean(lineContents[1]));
+                    isExpense.put(lineContents[0], Boolean.parseBoolean(lineContents[1]));
                     quantity.put(lineContents[0], Integer.parseInt(lineContents[2]));
-                    sum_of_one.put(lineContents[0], Integer.parseInt(lineContents[3]));
+                    sumOfOne.put(lineContents[0], Integer.parseInt(lineContents[3]));
 
                 }
-                itemsInfo.add(is_expense);
+                itemsInfo.add(isExpense);
                 itemsInfo.add(quantity);
-                itemsInfo.add(sum_of_one);
+                itemsInfo.add(sumOfOne);
                 monthlyReport.put(months[i], itemsInfo);
+
+                isExpense = null;
+                quantity = null;
+                sumOfOne = null;
 
             } isAlreadyChecked = true;
         } else {
@@ -45,16 +49,27 @@ public class MonthlyReport {
     }
     public void printReport(){
         for (String month: months){
-            System.out.println(month);
-            ArrayList<HashMap> itemsOfMonth = monthlyReport.get(month);
-            System.out.println(itemsOfMonth);
-            for (HashMap item: itemsOfMonth){
-               for (HashMap innerItem: itemsOfMonth){
-                   for (Object innerItemName: innerItem.keySet()){
+            int maxMoneyMonth = 0;
+            String maxMoneyItemName = "";
 
-                   }
-               }
+            System.out.println(month);
+
+            ArrayList<HashMap> itemsOfMonth = monthlyReport.get(month);
+
+            HashMap<String, Boolean> is_expense = itemsOfMonth.get(0);
+            HashMap<String, Integer> quantity = itemsOfMonth.get(1);
+            HashMap<String, Integer> sum_of_one = itemsOfMonth.get(2);
+
+            for (String itemName: is_expense.keySet()){
+                if (quantity.get(itemName)*sum_of_one.get(itemName) > maxMoneyMonth && is_expense.get(itemName)) {
+                    maxMoneyMonth = quantity.get(itemName)*sum_of_one.get(itemName);
+                    maxMoneyItemName = itemName;
+                }
             }
+            System.out.println("Самый прибыльный товар в данном месяце - "+maxMoneyItemName);
+            System.out.println("Сумма, которую он принес составила "+ maxMoneyMonth);
+            System.out.println();
+
         }
     }
 
