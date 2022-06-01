@@ -7,6 +7,9 @@ public class YearlyReport {
     private final String  yearFileName= "y.";
     static private HashMap<Integer, ArrayList<ArrayList>> yearlyReport = new HashMap<>();
 
+    public static HashMap<String, Integer> monthCmnEx = new HashMap<>();
+    public static HashMap<String, Integer> monthCmnIn = new HashMap<>();
+
     static private boolean isYearAlreadyChecked = false;
     public void countYearlyReport() {
         if (!isYearAlreadyChecked) {
@@ -34,7 +37,6 @@ public class YearlyReport {
                 convertedToListReport.add(amount);
                 convertedToListReport.add(monthsOfYearReport);
                 yearlyReport.put(years[i], convertedToListReport);
-                System.out.println(yearlyReport);
 
             } isYearAlreadyChecked = true;
         } else {
@@ -44,7 +46,7 @@ public class YearlyReport {
     }
 
 
-    public void printYearlyReport() {
+    public void printYearlyReportCount() {
         for (int year: years) {
             int commonYearIncome = 0;
             int commonYearExpense = 0;
@@ -52,9 +54,12 @@ public class YearlyReport {
             int amountValue = 0;
             String monthName = "";
 
-
             int expensesNum = 0;
             int incomesNum = 0;
+
+            int profit = 0;
+            int monthIncome = 0;
+            int monthExpense = 0;
 
             System.out.println(year);
 
@@ -68,9 +73,7 @@ public class YearlyReport {
                 is_expense = isExpense.get(i);
                 amountValue = amount.get(i);
                 monthName = monthsOfYearReport.get(i);
-                int profit = 0;
-                int monthIncome = 0;
-                int monthExpense = 0;
+
 
                 if (is_expense){
                     commonYearIncome += amountValue;
@@ -88,11 +91,18 @@ public class YearlyReport {
                     System.out.println(monthName);
                     System.out.println("Прибыль в этом месяце составила "+(profit));
                     System.out.println();
+
                 }
+                ArrayList<HashMap> dataToPutIside = new ArrayList<>();
 
-
+                monthCmnEx.put(monthName, monthExpense);
+                monthCmnIn.put(monthName, monthIncome);
 
             }
+
+            //dataToCompare.put(year, )
+
+
 
             double averageYearIncome = commonYearIncome/incomesNum;
             double averageYearExpense = commonYearExpense/expensesNum;
@@ -104,6 +114,14 @@ public class YearlyReport {
 
             }
 
+    }
+
+    HashMap getExFromYR(){
+        return monthCmnEx;
+    }
+
+    HashMap getInFromYR(){
+        return monthCmnIn;
     }
 
 

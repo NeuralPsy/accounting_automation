@@ -1,6 +1,3 @@
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -9,6 +6,9 @@ public class MonthlyReport {
     private String[] months = {"Январь", "Февраль", "Март"};
     private final String monthFileName = "m.20210";
     static HashMap<String, ArrayList> monthlyReport = new HashMap<>();
+
+    static private HashMap<String, Integer> monthCmnEx = new HashMap<>();
+    static private HashMap<String, Integer> monthCmnIn = new HashMap<>();
 
     static private boolean isMonthAlreadyChecked = false;
 
@@ -37,7 +37,6 @@ public class MonthlyReport {
                 itemsInfo.add(quantity);
                 itemsInfo.add(sumOfOne);
                 monthlyReport.put(months[i], itemsInfo);
-                System.out.println(monthlyReport);
 
             }
             isMonthAlreadyChecked = true;
@@ -47,12 +46,18 @@ public class MonthlyReport {
         }
     }
 
-    public void printMonthsReport() {
+    public void printMonthsReportCount() {
+
+
         for (String month : months) {
             int maxIncome = 0;
             int maxExpense = 0;
             String maxExpenseItemName = "";
             String maxIncomeItemName = "";
+
+            int profit = 0;
+            int monthIncome = 0;
+            int monthExpense = 0;
 
             System.out.println(month);
 
@@ -71,6 +76,8 @@ public class MonthlyReport {
                     maxExpense = quantity.get(itemName) * sum_of_one.get(itemName);
                     maxExpenseItemName = itemName;
                 }
+
+
             }
             System.out.println("Самый прибыльный товар в данном месяце - " + maxIncomeItemName);
             System.out.println("Сумма, которую он принес составила " + maxIncome);
@@ -79,5 +86,9 @@ public class MonthlyReport {
             System.out.println();
 
         }
+    }
+
+    void getReport(){
+        return;
     }
 }

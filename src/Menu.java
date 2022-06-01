@@ -12,6 +12,7 @@ public class Menu{
     void doWhatUserSay(int userInput){
         MonthlyReport monthlyReport = new MonthlyReport();
         YearlyReport yearlyReport = new YearlyReport();
+        Comparison comparison = new Comparison();
 
         switch (userInput){
             case 1:
@@ -20,11 +21,14 @@ public class Menu{
             case 2:
                 yearlyReport.countYearlyReport();
                 break;
+            case 3:
+                comparison.compareReports();
+                break;
             case 4:
-                monthlyReport.printMonthsReport();
+                monthlyReport.printMonthsReportCount();
                 break;
             case 5:
-                yearlyReport.printYearlyReport();
+                yearlyReport.printYearlyReportCount();
                 break;
 
             }
