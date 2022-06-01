@@ -46,8 +46,6 @@ public class YearlyReport {
 
     public void printYearlyReport() {
         for (int year: years) {
-            int maxYearIncome = 0;
-            int maxYearExpense = 0;
             int commonYearIncome = 0;
             int commonYearExpense = 0;
             boolean is_expense = false;
