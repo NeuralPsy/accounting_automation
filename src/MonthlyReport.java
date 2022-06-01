@@ -48,8 +48,10 @@ public class MonthlyReport {
     }
     public void printReport(){
         for (String month: months){
-            int maxMoneyMonth = 0;
-            String maxMoneyItemName = "";
+            int maxIncome = 0;
+            int maxExpense = 0;
+            String maxExpenseItemName = "";
+            String maxIncomeItemName = "";
 
             System.out.println(month);
 
@@ -60,13 +62,19 @@ public class MonthlyReport {
             HashMap<String, Integer> sum_of_one = itemsOfMonth.get(2);
 
             for (String itemName: is_expense.keySet()){
-                if (quantity.get(itemName)*sum_of_one.get(itemName) > maxMoneyMonth && is_expense.get(itemName)) {
-                    maxMoneyMonth = quantity.get(itemName)*sum_of_one.get(itemName);
-                    maxMoneyItemName = itemName;
+                if (quantity.get(itemName)*sum_of_one.get(itemName) > maxIncome && is_expense.get(itemName)) {
+                    maxIncome = quantity.get(itemName)*sum_of_one.get(itemName);
+                    maxIncomeItemName = itemName;
+                }
+                if (quantity.get(itemName)*sum_of_one.get(itemName) > maxExpense && !is_expense.get(itemName)) {
+                    maxExpense  = quantity.get(itemName)*sum_of_one.get(itemName);
+                    maxExpenseItemName = itemName;
                 }
             }
-            System.out.println("Самый прибыльный товар в данном месяце - "+maxMoneyItemName);
-            System.out.println("Сумма, которую он принес составила "+ maxMoneyMonth);
+            System.out.println("Самый прибыльный товар в данном месяце - "+maxIncomeItemName);
+            System.out.println("Сумма, которую он принес составила "+ maxIncome);
+            System.out.println("Самый большой расход в этом месяце - "+maxExpenseItemName);
+            System.out.println("На это было потрачено - "+maxExpense);
             System.out.println();
 
         }
