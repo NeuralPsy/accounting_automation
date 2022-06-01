@@ -1,4 +1,11 @@
+import java.util.ArrayList;
+
 public class Menu{
+
+    private Comparison comparison = new Comparison();
+    private MonthlyReport monthlyReport = new MonthlyReport();
+    private YearlyReport yearlyReport = new YearlyReport();
+    private ArrayList<Integer> userCommands = new ArrayList<>();
     void printMenu(){
         System.out.println("Какое действие Вы хотите Выполнить?");
         System.out.println("1 – Считать все месячные отчёты");
@@ -10,24 +17,41 @@ public class Menu{
     }
 
     void doWhatUserSay(int userInput){
-        MonthlyReport monthlyReport = new MonthlyReport();
-        YearlyReport yearlyReport = new YearlyReport();
 
         switch (userInput){
             case 1:
-                monthlyReport.countMonthsReport();
+                if (userCommands.contains(userInput))
+                    System.out.println("Месячные отчеты уже считаны");
+                else {
+                    userCommands.add(userInput);
+                    monthlyReport.countMonthsReport();
+                    System.out.println("Считывание прошло успешно");
+                }
                 break;
             case 2:
-                yearlyReport.countYearlyReport();
+                if (userCommands.contains(userInput))
+                    System.out.println("Годовой отчет уже считан");
+                else {
+                    userCommands.add(userInput);
+                    yearlyReport.countYearlyReport();
+                    System.out.println("Считывание прошло успешно");
+                }
                 break;
             case 3:
-                System.out.println(yearlyReport.getExFromYR());;
+                if (userCommands.contains(1) && userCommands.contains(2)) {
+                    monthlyReport.transformData();
+                    yearlyReport.transformData();
+                    comparison.startComparing();
+                }
+                else System.out.println("Необходимо считать месячные и годовые отчеты вместе перед сверкой");
                 break;
             case 4:
-                monthlyReport.printMonthsReportCount();
+                if (userCommands.contains(1)) monthlyReport.printMonthsReportCount();
+                else System.out.println("Необходимо считать месячные отчеты");
                 break;
             case 5:
-                yearlyReport.printYearlyReportCount();
+                if (userCommands.contains(2)) yearlyReport.printYearlyReportCount();
+                else System.out.println("Необходимо считать годовой отчет");
                 break;
 
             }

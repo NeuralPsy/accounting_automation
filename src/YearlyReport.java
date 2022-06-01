@@ -1,14 +1,16 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
+
 public class YearlyReport {
     private String[] months = {"Январь", "Февраль", "Март"};
     private int[] years = {2021}; // на случай, если еще придется добавлять отчеты за другой год
     private final String  yearFileName= "y.";
-    static private HashMap<Integer, ArrayList<ArrayList>> yearlyReport = new HashMap<>();
+    private HashMap<Integer, ArrayList<ArrayList>> yearlyReport = new HashMap<>();
 
-    static private HashMap<String, Integer> monthCmnEx = new HashMap<>();
-    static private HashMap<String, Integer> monthCmnIn = new HashMap<>();
+    private HashMap<String, Integer> commonMonthsExpenses = new HashMap<>();
+    private HashMap<String, Integer> commonMonthsIncomes = new HashMap<>();
 
     private Comparison comparison = new Comparison();
 
@@ -45,6 +47,44 @@ public class YearlyReport {
             System.out.println("Отчет за год уже считан. " +
                     "Вы можете вывести информацию о годовом отчете");
         }
+    }
+
+    public void transformData(){
+        for (int year: years) {
+
+            boolean is_expense = false;
+            int amountValue = 0;
+            String monthName = "";
+
+            int monthIncome = 0;
+            int monthExpense = 0;
+
+
+            ArrayList<Boolean> isExpense = yearlyReport.get(year).get(0);
+            ArrayList<Integer> amount = yearlyReport.get(year).get(1);
+            ArrayList<String> monthsOfYearReport = yearlyReport.get(year).get(2);
+
+
+            for (int i = 0; i < isExpense.size(); i++){
+                is_expense = isExpense.get(i);
+                amountValue = amount.get(i);
+                monthName = monthsOfYearReport.get(i);
+
+
+                if (is_expense){
+                    monthExpense = amountValue;
+                } else {
+                    monthIncome = amountValue;
+                }
+
+                commonMonthsExpenses.put(monthName, monthExpense);
+                commonMonthsIncomes.put(monthName, monthIncome);
+
+            }
+            comparison.setMonthHashMapsFromYear(commonMonthsExpenses, commonMonthsIncomes);
+
+        }
+
     }
 
 
@@ -96,16 +136,15 @@ public class YearlyReport {
 
                 }
 
-                monthCmnEx.put(monthName, monthExpense);
-                monthCmnIn.put(monthName, monthIncome);
-
+                commonMonthsExpenses.put(monthName, monthExpense);
+                commonMonthsIncomes.put(monthName, monthIncome);
 
             }
 
             double averageYearIncome = commonYearIncome/incomesNum;
             double averageYearExpense = commonYearExpense/expensesNum;
 
-            comparison.setMonthHashMaps(monthCmnEx, monthCmnIn);
+            comparison.setMonthHashMapsFromYear(commonMonthsExpenses, commonMonthsIncomes);
 
             System.out.println("Средний расход за все месяцы в году "+averageYearExpense);
             System.out.println("Средний доход за все месяцы в году "+averageYearIncome);
@@ -114,14 +153,5 @@ public class YearlyReport {
             }
 
     }
-
-    HashMap getExFromYR(){
-        return monthCmnEx;
-    }
-
-    HashMap getInFromYR(){
-        return monthCmnIn;
-    }
-
 
 }

@@ -1,20 +1,37 @@
 import java.util.HashMap;
 
 public class Comparison {
-    static private HashMap<String, Integer> monthCmnEx = new HashMap<>();
-    static private HashMap<String, Integer> monthCmnIn = new HashMap<>();
-    void setMonthHashMaps(HashMap monthCmnEx, HashMap monthCmnIn){
-        this.monthCmnEx = monthCmnEx;
-        this.monthCmnIn = monthCmnIn;
+    static private HashMap<String, Integer> expensesFromYearReport;
+    static private HashMap<String, Integer> incomesFromYearReport;
+
+    static private HashMap<String, Integer> expensesFromMonthReport;
+    static private HashMap<String, Integer> incomesFromMonthReport;
+
+
+    void setMonthHashMapsFromYear(HashMap monthCmnExFromYear, HashMap monthCmnInFromYear){
+        this.expensesFromYearReport = monthCmnExFromYear;
+        this.incomesFromYearReport = monthCmnInFromYear;
     }
 
-    HashMap getMonthsCmnEx(){
-        return monthCmnEx;
+    void setMonthHashMapsFromMonths(HashMap monthCmnExFromMonths, HashMap monthCmnInFromMonths){
+        this.expensesFromMonthReport = monthCmnExFromMonths;
+        this.incomesFromMonthReport = monthCmnInFromMonths;
     }
 
-    HashMap getMonthsCmnIn(){
-        return monthCmnIn;
+    void startComparing(){
+        boolean issues = false;
+        for (String month: expensesFromMonthReport.keySet()){
+            if (!expensesFromYearReport.get(month).equals(expensesFromMonthReport.get(month))) {
+                System.out.println("Обнаружено несоответствие показателей в расходах за " + month);
+                issues = true;
+            } else if (!incomesFromYearReport.get(month).equals(incomesFromMonthReport.get(month))){
+                System.out.println("Обнаружено несоответствие показателей в доходах за " + month);
+                issues = true;
+            }
+        }
+        System.out.println("Проверка завершена");
+        if (!issues) System.out.println("Ошибки не обнаружены");
+        System.out.println();
     }
-
 
 }
