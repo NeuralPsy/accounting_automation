@@ -14,9 +14,11 @@ public class MonthlyReport {
 
     public void countReport() {
         if (!isAlreadyChecked) {
-            ArrayList<HashMap> itemsInfo = new ArrayList<>();
+
+            System.out.println(monthlyReport);
 
             for (int i = 0; i < months.length; i++) {
+                ArrayList<HashMap> itemsInfo = new ArrayList<>();
                 HashMap<String, Boolean> isExpense = new HashMap<>();
                 HashMap<String, Integer> quantity = new HashMap<>();
                 HashMap<String, Integer> sumOfOne = new HashMap<>();
@@ -36,10 +38,7 @@ public class MonthlyReport {
                 itemsInfo.add(quantity);
                 itemsInfo.add(sumOfOne);
                 monthlyReport.put(months[i], itemsInfo);
-
-                isExpense = null;
-                quantity = null;
-                sumOfOne = null;
+                System.out.println(monthlyReport);
 
             } isAlreadyChecked = true;
         } else {
