@@ -14,7 +14,7 @@ public class MonthlyReport {
 
     public void countMonthsReport() {
         if (!isMonthAlreadyChecked) {
-            ReadFile fileContents = new ReadFile();
+            manipulateFile fileContents = new manipulateFile();
             for (int i = 0; i < months.length; i++) {
                 ArrayList<HashMap> itemsInfo = new ArrayList<>();
                 HashMap<String, Boolean> isExpense = new HashMap<>();
@@ -86,9 +86,5 @@ public class MonthlyReport {
             System.out.println();
 
         }
-    }
-
-    void getReport(){
-        return;
     }
 }

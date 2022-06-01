@@ -7,13 +7,15 @@ public class YearlyReport {
     private final String  yearFileName= "y.";
     static private HashMap<Integer, ArrayList<ArrayList>> yearlyReport = new HashMap<>();
 
-    public static HashMap<String, Integer> monthCmnEx = new HashMap<>();
-    public static HashMap<String, Integer> monthCmnIn = new HashMap<>();
+    static private HashMap<String, Integer> monthCmnEx = new HashMap<>();
+    static private HashMap<String, Integer> monthCmnIn = new HashMap<>();
+
+    private Comparison comparison = new Comparison();
 
     static private boolean isYearAlreadyChecked = false;
     public void countYearlyReport() {
         if (!isYearAlreadyChecked) {
-            ReadFile fileContents = new ReadFile();
+            manipulateFile fileContents = new manipulateFile();
 
             for (int i = 0; i < years.length; i++) {
                 ArrayList<Boolean> isExpense = new ArrayList<>();
@@ -93,24 +95,21 @@ public class YearlyReport {
                     System.out.println();
 
                 }
-                ArrayList<HashMap> dataToPutIside = new ArrayList<>();
 
                 monthCmnEx.put(monthName, monthExpense);
                 monthCmnIn.put(monthName, monthIncome);
 
+
             }
-
-            //dataToCompare.put(year, )
-
-
 
             double averageYearIncome = commonYearIncome/incomesNum;
             double averageYearExpense = commonYearExpense/expensesNum;
 
+            comparison.setMonthHashMaps(monthCmnEx, monthCmnIn);
+
             System.out.println("Средний расход за все месяцы в году "+averageYearExpense);
             System.out.println("Средний доход за все месяцы в году "+averageYearIncome);
             System.out.println();
-
 
             }
 

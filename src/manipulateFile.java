@@ -2,7 +2,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class ReadFile {
+public class manipulateFile {
 
     public String readFile(String path){
         try {
@@ -13,4 +13,5 @@ public class ReadFile {
             return null;
         }
     }
+
 }
