@@ -7,24 +7,23 @@ import java.util.HashMap;
 
 public class MonthlyReport {
     private String[] months = {"Январь", "Февраль", "Март"};
-    private final String  monthFileName= "m.20210";
+    private final String monthFileName = "m.20210";
     static HashMap<String, ArrayList> monthlyReport = new HashMap<>();
 
-    static private boolean isAlreadyChecked = false;
+    static private boolean isMonthAlreadyChecked = false;
 
-    public void countReport() {
-        if (!isAlreadyChecked) {
-
-            System.out.println(monthlyReport);
-
+    public void countMonthsReport() {
+        if (!isMonthAlreadyChecked) {
+            ReadFile fileContents = new ReadFile();
             for (int i = 0; i < months.length; i++) {
                 ArrayList<HashMap> itemsInfo = new ArrayList<>();
                 HashMap<String, Boolean> isExpense = new HashMap<>();
                 HashMap<String, Integer> quantity = new HashMap<>();
                 HashMap<String, Integer> sumOfOne = new HashMap<>();
 
-                String fileContents = readFileContentsOrNull("resources/" + monthFileName + (i + 1) + ".csv");
-                String[] lines = fileContents.split(System.lineSeparator());
+
+                String openedFile = fileContents.readFile("resources/" + monthFileName + (i + 1) + ".csv");
+                String[] lines = openedFile.split(System.lineSeparator());
 
                 for (int j = 1; j < lines.length; j++) {
                     String[] lineContents = lines[j].split(",");
@@ -40,14 +39,16 @@ public class MonthlyReport {
                 monthlyReport.put(months[i], itemsInfo);
                 System.out.println(monthlyReport);
 
-            } isAlreadyChecked = true;
+            }
+            isMonthAlreadyChecked = true;
         } else {
             System.out.println("Отчеты за все месяцы уже считаны. " +
                     "Вы можете вывести информацию о всех месячных отчетах");
         }
     }
-    public void printReport(){
-        for (String month: months){
+
+    public void printMonthsReport() {
+        for (String month : months) {
             int maxIncome = 0;
             int maxExpense = 0;
             String maxExpenseItemName = "";
@@ -61,36 +62,22 @@ public class MonthlyReport {
             HashMap<String, Integer> quantity = itemsOfMonth.get(1);
             HashMap<String, Integer> sum_of_one = itemsOfMonth.get(2);
 
-            for (String itemName: is_expense.keySet()){
-                if (quantity.get(itemName)*sum_of_one.get(itemName) > maxIncome && is_expense.get(itemName)) {
-                    maxIncome = quantity.get(itemName)*sum_of_one.get(itemName);
+            for (String itemName : is_expense.keySet()) {
+                if (quantity.get(itemName) * sum_of_one.get(itemName) > maxIncome && is_expense.get(itemName)) {
+                    maxIncome = quantity.get(itemName) * sum_of_one.get(itemName);
                     maxIncomeItemName = itemName;
                 }
-                if (quantity.get(itemName)*sum_of_one.get(itemName) > maxExpense && !is_expense.get(itemName)) {
-                    maxExpense  = quantity.get(itemName)*sum_of_one.get(itemName);
+                if (quantity.get(itemName) * sum_of_one.get(itemName) > maxExpense && !is_expense.get(itemName)) {
+                    maxExpense = quantity.get(itemName) * sum_of_one.get(itemName);
                     maxExpenseItemName = itemName;
                 }
             }
-            System.out.println("Самый прибыльный товар в данном месяце - "+maxIncomeItemName);
-            System.out.println("Сумма, которую он принес составила "+ maxIncome);
-            System.out.println("Самый большой расход в этом месяце - "+maxExpenseItemName);
-            System.out.println("На это было потрачено - "+maxExpense);
+            System.out.println("Самый прибыльный товар в данном месяце - " + maxIncomeItemName);
+            System.out.println("Сумма, которую он принес составила " + maxIncome);
+            System.out.println("Самый большой расход в этом месяце - " + maxExpenseItemName);
+            System.out.println("На это было потрачено - " + maxExpense);
             System.out.println();
 
         }
     }
-
-
-
-
-    public String readFileContentsOrNull(String path) {
-        try {
-            return Files.readString(Path.of(path));
-        } catch (IOException e) {
-            System.out.println("Невозможно прочитать файл с месячным отчётом. " +
-                    "Возможно, файл не находится в нужной директории.");
-            return null;
-        }
-    }
 }
-

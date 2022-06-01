@@ -1,10 +1,3 @@
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
-
 public class Menu{
     void printMenu(){
         System.out.println("Какое действие Вы хотите Выполнить?");
@@ -18,14 +11,22 @@ public class Menu{
 
     void doWhatUserSay(int userInput){
         MonthlyReport monthlyReport = new MonthlyReport();
-        HashMap<String, ArrayList<HashMap>> monthsData = null;
+        YearlyReport yearlyReport = new YearlyReport();
+
         switch (userInput){
             case 1:
-                monthlyReport.countReport();
+                monthlyReport.countMonthsReport();
+                break;
+            case 2:
+                yearlyReport.countYearlyReport();
                 break;
             case 4:
-                monthlyReport.printReport();
+                monthlyReport.printMonthsReport();
                 break;
+            case 5:
+                yearlyReport.printYearlyReport();
+                break;
+
             }
 
         }
