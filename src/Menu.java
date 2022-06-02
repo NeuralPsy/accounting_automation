@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 
 public class Menu{
+    //Ростивлав, спасибо большое за литературу и за обратную связь.
+    // Очень приятно, что без технического образования мне удалось справиться с задачей)
 
     private Comparison comparison = new Comparison();
     private MonthlyReport monthlyReport = new MonthlyReport();
@@ -21,7 +23,8 @@ public class Menu{
         switch (userInput){
             case 1:
                 if (userCommands.contains(userInput))
-                    System.out.println("Месячные отчеты уже считаны");
+                    System.out.println("Месячные отчеты уже считаны");// Здесь я предусмотрел вывод ошибки,
+                                                                    // если данные уже были обработаны
                 else {
                     userCommands.add(userInput);
                     monthlyReport.countMonthsReport();
@@ -30,7 +33,8 @@ public class Menu{
                 break;
             case 2:
                 if (userCommands.contains(userInput))
-                    System.out.println("Годовой отчет уже считан");
+                    System.out.println("Годовой отчет уже считан");// Здесь провел проверку
+                                                                    // на наличие считанного отчета
                 else {
                     userCommands.add(userInput);
                     yearlyReport.countYearlyReport();
@@ -38,7 +42,8 @@ public class Menu{
                 }
                 break;
             case 3:
-                if (userCommands.contains(1) && userCommands.contains(2)) {
+                if (userCommands.contains(1) && userCommands.contains(2)) {     // аналогично и здесь. Операция
+                                                                // не будет выполнена пока не загрузятся отчеты
                     monthlyReport.transformData();
                     yearlyReport.transformData();
                     comparison.startComparing();
@@ -47,11 +52,11 @@ public class Menu{
                 break;
             case 4:
                 if (userCommands.contains(1)) monthlyReport.printMonthsReportCount();
-                else System.out.println("Необходимо считать месячные отчеты");
+                else System.out.println("Необходимо считать месячные отчеты");      //здесь тоже
                 break;
             case 5:
                 if (userCommands.contains(2)) yearlyReport.printYearlyReportCount();
-                else System.out.println("Необходимо считать годовой отчет");
+                else System.out.println("Необходимо считать годовой отчет");       // и здесь
                 break;
 
             }

@@ -22,20 +22,15 @@ public class MonthlyReport {
                 HashMap<String, Integer> sumOfOne = new HashMap<>();
 
                 String openedFile = fileContents.readFile("resources/" + monthFileName + (i + 1) + ".csv");
-                String[] lines = openedFile.split(System.lineSeparator());
 
-                for (int j = 1; j < lines.length; j++) {
-                    String[] lineContents = lines[j].split(",");
-
-                    isExpense.put(lineContents[0], Boolean.parseBoolean(lineContents[1]));
-                    quantity.put(lineContents[0], Integer.parseInt(lineContents[2]));
-                    sumOfOne.put(lineContents[0], Integer.parseInt(lineContents[3]));
-                }
-
-                itemsInfo.add(isExpense);
-                itemsInfo.add(quantity);
-                itemsInfo.add(sumOfOne);
-                monthlyReport.put(months[i], itemsInfo);
+                fileContents.createMonthlyReport(
+                        openedFile.split(System.lineSeparator()),
+                        isExpense,
+                        quantity,
+                        sumOfOne,
+                        itemsInfo,
+                        monthlyReport,
+                        months[i]);
 
             }
     }
@@ -97,7 +92,6 @@ public class MonthlyReport {
                 }
 
             }
-
 
             System.out.println("Самый прибыльный товар в данном месяце - " + maxIncomeItemName);
             System.out.println("Сумма, которую он принес составила " + maxIncome);

@@ -14,9 +14,7 @@ public class YearlyReport {
 
     private Comparison comparison = new Comparison();
 
-    static private boolean isYearAlreadyChecked = false;
     public void countYearlyReport() {
-        if (!isYearAlreadyChecked) {
             manipulateFile fileContents = new manipulateFile();
 
             for (int i = 0; i < years.length; i++) {
@@ -26,32 +24,22 @@ public class YearlyReport {
                 ArrayList<ArrayList> convertedToListReport = new ArrayList<>();
 
                 String openedFile = fileContents.readFile("resources/" + yearFileName + years[i] + ".csv");
-                String[] lines = openedFile.split(System.lineSeparator());
 
-                for (int j = 1; j < lines.length; j++) {
-                    String[] lineContents = lines[j].split(",");
-                    if (Boolean.parseBoolean(lineContents[2]));
+                fileContents.createYearReport(openedFile.split(System.lineSeparator()),
+                                            isExpense,
+                                            amount,
+                                            monthsOfYearReport,
+                                            convertedToListReport,
+                                            yearlyReport,
+                                            years[i],
+                                            months);
 
-                    isExpense.add(Boolean.parseBoolean(lineContents[2]));
-                    amount.add(Integer.parseInt(lineContents[1]));
-                    monthsOfYearReport.add(months[Integer.parseInt(lineContents[0])-1]);
+            }
 
-                }
-                convertedToListReport.add(isExpense);
-                convertedToListReport.add(amount);
-                convertedToListReport.add(monthsOfYearReport);
-                yearlyReport.put(years[i], convertedToListReport);
-
-            } isYearAlreadyChecked = true;
-        } else {
-            System.out.println("Отчет за год уже считан. " +
-                    "Вы можете вывести информацию о годовом отчете");
-        }
     }
 
     public void transformData(){
         for (int year: years) {
-
             boolean is_expense = false;
             int amountValue = 0;
             String monthName = "";
