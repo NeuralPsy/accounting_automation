@@ -1,8 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
-
 public class YearlyReport {
     private String[] months = {"Январь", "Февраль", "Март"};
     private int[] years = {2021}; // на случай, если еще придется добавлять отчеты за другой год

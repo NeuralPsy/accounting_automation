@@ -16,7 +16,6 @@ public class manipulateFile {
         }
     }
 
-    //Добавил методы создания удобного для программы формата отчета
     public void createMonthlyReport(String[] openedFile,
                                HashMap map1,
                                HashMap map2,

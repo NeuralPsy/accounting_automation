@@ -1,8 +1,6 @@
 import java.util.ArrayList;
 
 public class Menu{
-    //Ростивлав, спасибо большое за литературу и за обратную связь.
-    // Очень приятно, что без технического образования мне удалось (вроде) справиться с задачей)
 
     private Comparison comparison = new Comparison();
     private MonthlyReport monthlyReport = new MonthlyReport();
